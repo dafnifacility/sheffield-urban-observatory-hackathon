@@ -1,0 +1,8 @@
+{
+  "url": "http://localhost:5000",
+  "table": "sensor_data",
+  "dsn": "host=localhost dbname=postgres user=postgres port=5432",
+  "params": {
+    "sensor_id": 1
+  }
+}
