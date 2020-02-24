@@ -1,0 +1,7 @@
+domain: dafni.ac.uk
+repo: github.com/jiphex/kpgthing
+resources:
+- group: sheffield
+  kind: Database
+  version: v1alpha1
+version: "2"

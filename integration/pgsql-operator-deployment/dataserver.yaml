@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dataserver
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: dataserver
+  template:
+    metadata:
+      labels:
+        app: dataserver
+    spec:
+      containers:
+        - name: dataserver
+          image: jiphex/shefdb:latest
+          args:
+            - server
+          env:
+            - name: DEBUG
+              value: "TRUE"
+            - name: FLASK_ENV
+              value: "DEVELOPMENT"
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dataserver
+  namespace: default
+spec:
+  selector:
+    app: dataserver
+  ports:
+    - port: 5000
+      targetPort: 8000

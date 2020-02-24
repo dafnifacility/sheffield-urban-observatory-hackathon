@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coldstoredb
+spec:
+  selector:
+    matchLabels:
+      app: coldstoredb
+  template:
+    metadata:
+      labels:
+        app: coldstoredb
+      namespace: default
+    spec:
+      containers:
+        - name: ncl-consumer
+          image: nharris172/hackweek-cold-store-consumer
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+        - name: db
+          image: nharris172/hackweek-cold-store-db
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: POSTGRES_DB
+              value: cold_store_db
+            - name: POSTGRES_PASSWORD
+              value: your_password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coldstoredb
+  namespace: default
+spec:
+  selector:
+    app: coldstoredb
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cold_store_db
+  namespace: default
+spec:
+  selector:
+    app: coldstoredb
+  ports:
+    - port: 5432
+      targetPort: 5432

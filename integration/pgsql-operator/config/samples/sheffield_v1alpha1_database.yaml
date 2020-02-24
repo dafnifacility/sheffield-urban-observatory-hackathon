@@ -1,0 +1,12 @@
+apiVersion: sheffield.dafni.ac.uk/v1alpha1
+kind: Database
+metadata:
+  name: database-sample
+spec:
+  dataTypes:
+    - "PM2_5"
+    - "NO"
+    - "CO"
+  period:
+    from: 2020-01-01T23:00:00+00:00
+    until: 2020-01-31T23:00:00+00:00
